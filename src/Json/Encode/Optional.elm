@@ -43,17 +43,17 @@ type Field
 
 {-| Creates a field that must always have a value.
 -}
-field : ( String, Value ) -> Field
-field ( name, val ) =
-    WithValue name val
+field : (a -> Value) -> ( String, a ) -> Field
+field encoder ( name, val ) =
+    WithValue name (encoder val)
 
 
 {-| Creates a field that may have a value. When no value is set, this field will
 be encoded as `null` or skipped, depending on what behaviour is requested when
 building the object.
 -}
-optionalField : ( String, Maybe a ) -> (a -> Value) -> Field
-optionalField ( name, maybeVal ) encoder =
+optionalField : (a -> Value) -> ( String, Maybe a ) -> Field
+optionalField encoder ( name, maybeVal ) =
     case maybeVal of
         Just val ->
             WithValue name (encoder val)
@@ -66,8 +66,8 @@ optionalField ( name, maybeVal ) encoder =
 always be encoded as `null`, ignoring any default behaviour requested when building
 the object.
 -}
-nullableField : ( String, Maybe a ) -> (a -> Value) -> Field
-nullableField ( name, maybeVal ) encoder =
+nullableField : (a -> Value) -> ( String, Maybe a ) -> Field
+nullableField encoder ( name, maybeVal ) =
     case maybeVal of
         Just val ->
             WithValue name (encoder val)
@@ -80,8 +80,8 @@ nullableField ( name, maybeVal ) encoder =
 always be skipped, ignoring any default behaviour requested when building
 the object.
 -}
-skippableField : ( String, Maybe a ) -> (a -> Value) -> Field
-skippableField ( name, maybeVal ) encoder =
+skippableField : (a -> Value) -> ( String, Maybe a ) -> Field
+skippableField encoder ( name, maybeVal ) =
     case maybeVal of
         Just val ->
             WithValue name (encoder val)
