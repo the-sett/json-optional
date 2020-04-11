@@ -14,7 +14,7 @@ as it currently is*.
 
 This API lets you choose easily whether to use nulls or skip optional fields. It is
 also designed to keep the encoder looking clean with `( "fieldName", value )` tuples
-in aligned in list (see example below).
+aligned in the list (see example below).
 
 An example encoder might look like:
 
